@@ -16,7 +16,7 @@ const Share = () => {
             src={currentUser.profilePic}
             alt=""
           />
-          <input type="text" placeholder={`What's on your mind ${currentUser.name}?`} />
+          <input type="text" placeholder={`What's on your mind ${currentUser.username}?`} />
         </div>
 
         <hr />
@@ -39,7 +39,7 @@ const Share = () => {
               <span>Tag Friends</span>
             </div>
           </div>
-          
+
           <div className="right">
             <button>Share</button>
           </div>
