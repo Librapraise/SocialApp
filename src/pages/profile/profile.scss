@@ -71,6 +71,11 @@
                 a:hover {
                     color: #5271ff;
                 }
+
+                @include tablet {
+                    display: flex;
+                    flex-wrap: wrap;
+                }
             }
 
             .center {
@@ -102,6 +107,9 @@
 
                     @include mobile {
                         gap: 20px;
+                    }
+                    @include tablet {
+                        gap: 10px;
                     }
                 }
 

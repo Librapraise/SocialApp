@@ -34,6 +34,13 @@
                         align-items: center;
                         gap: 10px;
                         
+                        .link {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 10px;
+                            color: themed("textColor");
+                        }
                         img {
                             width: 30px;
                             height: 30px;

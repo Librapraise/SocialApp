@@ -7,10 +7,12 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Comments } from "../comments/comments";
+import Share from "../share/Share";
 
 export const Post = ({ post }) => {
 
     const [ commentsOpen, setCommentsOpen ] = useState(false);
+    const [ shareOpen, setShareOpen ] = useState(false);
 
     //temporary like function
     const [liked, setLiked ] = useState(false);
@@ -44,17 +46,18 @@ export const Post = ({ post }) => {
                         { liked ? <FavoriteOutlinedIcon onClick={() => setLiked(!liked)}/> : <FavoriteBorderOutlinedIcon onClick={() => setLiked(!liked)}/> }
                         12 Likes
                     </div>
-                    <div className="item" onClick={() => setCommentsOpen(!commentsOpen)}>
+                    <div className="item" onClick={() => setCommentsOpen(!commentsOpen)} >
                         <TextsmsOutlinedIcon />
                         12 Comments
                     </div>
-                    <div className="item">
+                    <div className="item" onClick={() => setShareOpen(!shareOpen)}>
                         <ShareOutlinedIcon />
                         Share
                     </div>
                 </div>
 
                 { commentsOpen && <Comments />}
+                { shareOpen && <Share />}
 
             </div>    
         </div>
