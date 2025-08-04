@@ -17,13 +17,13 @@ import { DarkModeContext } from "./context/darkMode";
 import { AuthContext } from "./context/authContext";
 
 function App() {
-
-  //darkMode context
+  // Context values
   const { darkMode } = useContext(DarkModeContext);
+  const { currentUser, loading } = useContext(AuthContext);
 
-  //layout for different pages
+  // Layout component for authenticated pages
   const Layout = () => {
-    return(
+    return (
       <div className={`theme-${darkMode ? "dark" : "light"}`}>
         <NavBar />
         <div style={{ display: "flex" }}>
@@ -37,26 +37,52 @@ function App() {
     );
   };
 
-  //for user logged in authentication
-   //user context
-  const { currentUser } = useContext(AuthContext);
-
+  // Protected Route component
   const ProtectedRoute = ({ children }) => {
-    if (!currentUser) {
-      return <Navigate to="/login"/>
+    // Show loading spinner while checking authentication
+    if (loading) {
+      return (
+        <div className="loading-container">
+          <div className="loading-spinner">Loading...</div>
+        </div>
+      );
     }
+
+    // Redirect to login if not authenticated
+    if (!currentUser) {
+      return <Navigate to="/login" replace />;
+    }
+
     return children;
   };
 
-  //routing pages
-  const router = createBrowserRouter ([
+  // Public Route component (redirects to home if already logged in)
+  const PublicRoute = ({ children }) => {
+    // Show loading spinner while checking authentication
+    if (loading) {
+      return (
+        <div className="loading-container">
+          <div className="loading-spinner">Loading...</div>
+        </div>
+      );
+    }
 
+    // Redirect to home if already authenticated
+    if (currentUser) {
+      return <Navigate to="/" replace />;
+    }
+
+    return children;
+  };
+
+  // Router configuration
+  const router = createBrowserRouter([
     {
       path: "/",
       element: (
         <ProtectedRoute>
           <Layout />
-        </ProtectedRoute> 
+        </ProtectedRoute>
       ),
       children: [
         {
@@ -69,20 +95,31 @@ function App() {
         },
       ],
     },
-
     {
       path: "/login",
-      element: <Login />,
+      element: (
+        <PublicRoute>
+          <Login />
+        </PublicRoute>
+      ),
     },
-
     {
       path: "/register",
-      element: <Register />,
+      element: (
+        <PublicRoute>
+          <Register />
+        </PublicRoute>
+      ),
+    },
+    {
+      // Catch all route - redirect to home
+      path: "*",
+      element: <Navigate to="/" replace />,
     },
   ]);
 
   return (
-    <div >
+    <div>
       <RouterProvider router={router} />
     </div>
   );
