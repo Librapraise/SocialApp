@@ -1,16 +1,34 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./login.scss";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 
-
 const Login = () => {
+  const [inputs, setInputs] = useState({
+    username: "",
+    password: "",
+  });
 
-  const { login } = useContext(AuthContext);
+  const { login, loading, error } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    login();
-  }
+  const handleChange = (e) => {
+    setInputs(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    const result = await login(inputs);
+    
+    if (result.success) {
+      // Redirect to home or dashboard after successful login
+      navigate("/");
+    }
+  };
 
   return (
     <div className="login">
@@ -26,16 +44,32 @@ const Login = () => {
 
         <div className="right">
           <h1>Login</h1>
-          <form>
-            <input type="text" placeholder="Username" />
-            <input type="password" placeholder="Password" />
-            <button onClick={handleLogin}>Login</button>
+          {error && <div className="error">{error}</div>}
+          <form onSubmit={handleSubmit}>
+            <input 
+              type="text" 
+              placeholder="Username or Email" 
+              name="username"
+              value={inputs.username}
+              onChange={handleChange}
+              required
+            />
+            <input 
+              type="password" 
+              placeholder="Password" 
+              name="password"
+              value={inputs.password}
+              onChange={handleChange}
+              required
+            />
+            <button type="submit" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </button>
           </form>
         </div>
       </div>
-
     </div>
-  )
-}
+  );
+};
 
 export default Login;
