@@ -12,6 +12,7 @@
         background-color: themed("bg");
         color: themed("textColor");
         z-index: 200;
+        
         .left {
             display: flex;
             align-items: center;
@@ -22,6 +23,7 @@
                 color: themed("logo");
                 font-size: 20px;
             }
+            
             .search {
                 display: flex;
                 align-items: center;
@@ -59,16 +61,34 @@
             }
 
             .user{
+                position: relative;
+                cursor: pointer;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 gap: 10px;
                 font-weight: 500;
+                padding: 8px 12px;
+                border-radius: 8px;
+                transition: background-color 0.2s ease;
 
                 @include tablet{
                     display: none;
                 }
-          
+
+                &:hover {
+                    background-color: rgba(themed("textColor"), 0.1);
+                }
+
+                .dropdown-arrow {
+                    font-size: 16px !important;
+                    transition: transform 0.2s ease;
+                    color: themed("textColor");
+                }
+
+                &:hover .dropdown-arrow {
+                    transform: rotate(180deg);
+                }
 
                 img{
                     width: 30px;
@@ -80,7 +100,76 @@
                 span{
                     color: themed("logo");
                 }
+
+                .dropdown-menu {
+                    position: absolute;
+                    top: 100%;
+                    right: 0;
+                    background: themed("bg");
+                    border: 1px solid themed("border");
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                    min-width: 180px;
+                    z-index: 1000;
+                    overflow: hidden;
+                    animation: slideDown 0.2s ease-out;
+
+                    .dropdown-item {
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                        padding: 12px 16px;
+                        text-decoration: none;
+                        color: themed("textColor");
+                        transition: all 0.2s ease;
+                        cursor: pointer;
+
+                        &:hover {
+                            background-color: rgba(themed("textColor"), 0.1);
+                        }
+
+                        svg {
+                            font-size: 18px !important;
+                            color: themed("textColor");
+                        }
+
+                        span {
+                            font-size: 14px;
+                            font-weight: 500;
+                        }
+
+                        &.logout-item {
+                            color: #e74c3c;
+
+                            &:hover {
+                                background-color: rgba(231, 76, 60, 0.1);
+                            }
+
+                            svg {
+                                color: #e74c3c;
+                            }
+                        }
+                    }
+
+                    .dropdown-divider {
+                        height: 1px;
+                        background-color: themed("border");
+                        margin: 4px 0;
+                    }
+                }
             }
         }
+    }
+}
+
+// Animation for dropdown
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
